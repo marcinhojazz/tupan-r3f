@@ -35,7 +35,7 @@ function Box() {
   
   return (
     <mesh ref={boxRef} castShadow receiveShadow>
-      <boxGeometry args={[2, 2, 2]} />
+      <boxGeometry args={[3, 3, 3]} />
       <meshStandardMaterial 
         color="crimson" 
         />
