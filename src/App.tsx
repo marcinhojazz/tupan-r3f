@@ -11,7 +11,7 @@ function Box() {
     'https://raw.githubusercontent.com/marcinhojazz/tupan-r3f/master/public/textures/terrain-normal.jpg',
     'https://raw.githubusercontent.com/marcinhojazz/tupan-r3f/master/public/textures/terrain-roughness.jpg',
   ]);
-
+  
   useEffect(() => {
     [normal, roughness].forEach((t) => {
       t.wrapS = RepeatWrapping;
@@ -41,7 +41,7 @@ function Box() {
         />
       <MeshReflectorMaterial 
         normalMap={normal}
-        normalScale={[0.15, 0.15]}
+        // normalScale={0.15}
         roughnessMap={roughness}
         envMapIntensity={0}
         dithering={true}
