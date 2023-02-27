@@ -1,11 +1,27 @@
-import React, { Suspense, useEffect, useRef } from 'react';
+import React, { Suspense, useEffect, useRef, useState } from 'react';
 import { Canvas, useFrame, useLoader } from '@react-three/fiber';
 import { MeshReflectorMaterial } from '@react-three/drei';
-import { LinearEncoding, Mesh, MeshStandardMaterial, PerspectiveCamera, RepeatWrapping, TextureLoader } from 'three';
+import { LinearEncoding, Mesh, MeshStandardMaterial, PerspectiveCamera, RepeatWrapping, TextureLoader, Vector3 } from 'three';
 import { Ground } from './components/Ground';
 
 function Box() {
   const boxRef = useRef<Mesh>(null!);
+  const [scale, setScale] = useState<Vector3>(new Vector3(1, 1, 1));
+  const [color, setColor] = useState<string>('crimson');
+
+  useFrame(() => {
+    boxRef.current.rotation.x += 0.005;
+    boxRef.current.rotation.y += 0.01;
+    boxRef.current.scale.set(scale.x, scale.y, scale.z);
+  })
+
+  const handleClick = () => {
+    setScale(new Vector3(2, 2, 2));
+    setTimeout(() => {
+      setScale(new Vector3(1, 1, 1));
+      setColor(getRandomColor());
+    }, 1000);
+  };
 
   const [roughness, normal] = useLoader(TextureLoader, [
     'textures/terrain-normal.jpg',
@@ -34,11 +50,9 @@ function Box() {
   })
   
   return (
-    <mesh ref={boxRef} castShadow receiveShadow>
-      <boxGeometry args={[2, 2, 2]} />
-      <meshStandardMaterial 
-        color="crimson" 
-        />
+    <mesh ref={boxRef} castShadow receiveShadow  onClick={handleClick}>
+      <boxGeometry args={[1.5, 1.5, 1.5]} />
+      <meshStandardMaterial color={color} />
       <MeshReflectorMaterial 
         normalMap={normal}
         // normalScale={0.15}
@@ -64,6 +78,11 @@ function Box() {
   )
 }
 
+function getRandomColor() {
+  const colors = ['crimson', 'red', 'green', 'pink', 'fuchsia'];
+  return colors[Math.floor(Math.random() * colors.length)];
+}
+
 function ThreeScene() {
   return (
     <Canvas shadows>
@@ -81,7 +100,7 @@ function ThreeScene() {
         position={[0, 10, 2]}
         shadow-bias={-0.0001}
       />
-      <ambientLight intensity={1.1} />
+      <ambientLight intensity={0.5} />
       <directionalLight
         color="white"
         intensity={2.5}
