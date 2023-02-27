@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { Suspense, useEffect, useRef } from 'react';
 import { Canvas, useFrame, useLoader } from '@react-three/fiber';
 import { MeshReflectorMaterial } from '@react-three/drei';
 import { LinearEncoding, Mesh, MeshStandardMaterial, PerspectiveCamera, RepeatWrapping, TextureLoader } from 'three';
@@ -8,8 +8,8 @@ function Box() {
   const boxRef = useRef<Mesh>(null!);
 
   const [roughness, normal] = useLoader(TextureLoader, [
-    'https://raw.githubusercontent.com/marcinhojazz/tupan-r3f/master/public/textures/terrain-normal.jpg',
-    'https://raw.githubusercontent.com/marcinhojazz/tupan-r3f/master/public/textures/terrain-roughness.jpg',
+    'textures/terrain-normal.jpg',
+    'textures/terrain-roughness.jpg',
   ]);
   
   useEffect(() => {
@@ -29,13 +29,13 @@ function Box() {
   });
 
   useFrame(() => {
-    boxRef.current.rotation.x += 0.01;
-    boxRef.current.rotation.y += 0.02;
+    boxRef.current.rotation.x += 0.008;
+    boxRef.current.rotation.y += 0.01;
   })
   
   return (
     <mesh ref={boxRef} castShadow receiveShadow>
-      <boxGeometry args={[3, 3, 3]} />
+      <boxGeometry args={[2, 2, 2]} />
       <meshStandardMaterial 
         color="crimson" 
         />
@@ -75,20 +75,22 @@ function ThreeScene() {
       <spotLight 
         color={[1, 0.25, 0.7]}
         intensity={1.5}
-        angle={0.6}
-        penumbra={0.5}
+        angle={2.6}
+        penumbra={0.2}
         castShadow
+        position={[0, 10, 2]}
         shadow-bias={-0.0001}
       />
-      <ambientLight intensity={0.5} />
+      <ambientLight intensity={1.1} />
       <directionalLight
         color="white"
-        intensity={1}
+        intensity={2.5}
         position={[0, 10, 0]}
         castShadow
       />
-      <Ground />
-      <Box /> 
+      <Suspense fallback>
+        <Box /> 
+      </Suspense>
       
     </Canvas>
   )
