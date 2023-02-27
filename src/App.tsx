@@ -8,8 +8,8 @@ function Box() {
   const boxRef = useRef<Mesh>(null!);
 
   const [roughness, normal] = useLoader(TextureLoader, [
-    'textures/terrain-normal.jpg',
-    'textures/terrain-roughness.jpg',
+    'https://raw.githubusercontent.com/marcinhojazz/tupan-r3f/master/public/textures/terrain-normal.jpg',
+    'https://raw.githubusercontent.com/marcinhojazz/tupan-r3f/master/public/textures/terrain-roughness.jpg',
   ]);
 
   useEffect(() => {
